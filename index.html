@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script>
+            var animes = new Array()
+
+            function carregarAnime(){
+                
+               
+                animes = JSON.parse(localStorage.getItem('Animes'))
+                
+                if(animes != null){
+                    var tabela = document.getElementById('idTabela')
+
+                    for(var i=0; i<animes.length; i++){
+                        var tr = document.createElement('tr')
+
+                        var tdAnime = document.createElement('td')
+                        tdAnime.innerHTML = animes[i].anime
+                        tr.appendChild(tdAnime)
+
+                        var tdOpiniao = document.createElement('td')
+                        tdOpiniao.innerHTML = animes[i].opiniao
+                        tr.appendChild(tdOpiniao)
+
+                        var tdNota = document.createElement('td')
+                        tdNota.innerHTML = animes[i].nota
+                        tr.appendChild(tdNota)
+
+                        tabela.appendChild(tr)
+                    }                   
+                }
+            } 
+
+            function cadastrarAnime(){
+                //peguei os valores digitados pelo usuário
+                var cAnime = document.getElementById('idAnime').value
+                var cOpiniao = document.getElementById('idOpiniao').value
+                var cNota = document.getElementById('idNota').value
+                
+                //recuperar os valores já cadastrados no localstorage
+                animes = JSON.parse(localStorage.getItem('Animes'))
+                if(animes == null)
+                    animes = new Array()
+                
+                //array de objetos
+                var anim = {
+                    anime: cAnime,
+                    opiniao: cOpiniao,
+                    nota: cNota
+                }
+
+                //inseri no array re-criado ou buscado no localstorage
+                animes.push(anim)
+
+                localStorage.setItem('Animes', JSON.stringify(animes))
+
+                alert('Anime adicionado com sucesso!')
+                //limpando as informações digitadas
+                document.getElementById('idAnime').value = ""
+                document.getElementById('idOpiniao').value = ""
+                document.getElementById('idNota').value = ""
+
+                //inserindo as informações digitadas na tabela
+                var tabela = document.getElementById('idTabela')
+                var tr = document.createElement('tr')
+                var tdAnime = document.createElement('td')
+                tdAnime.innerHTML = cAnime
+                tr.appendChild(tdAnime)
+                var tdOpiniao = document.createElement('td')
+                tdOpiniao.innerHTML = cOpiniao
+                tr.appendChild(tdOpiniao)
+                var tdNota = document.createElement('td')
+                tdNota.innerHTML = cNota
+                tr.appendChild(tdNota)
+                tabela.appendChild(tr)
+            }   
+        </script>
+    </head>
+    <body onload="carregarAnime()">
+        <div class="container">
+            <h3>Animes que já assisti</h3>
+            <div class="row">                
+                <div class="col-sm"> 
+                    <label for="idAnime" class="sr-only">Nome</label>
+                    <input type="text" class="form-control" id="idAnime" placeholder="Anime">
+                </div>
+                <div class="col-sm">
+                    <label for="idOpniao" class="sr-only">Opinião</label>
+                    <input type="text" class="form-control" id="idOpiniao" placeholder="Opiniao">
+                </div>
+                <div class="col-sm">
+                    <label for="idNota" class="sr-only">Nota</label>
+                    <input type="text" class="form-control" id="idNota" placeholder="Nota">
+                </div>
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-primary" onclick='cadastrarAnime()'>Cadastrar</button>                    
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-sm"> 
+                </br>
+                    <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Opinião breve</th>
+                            <th scope="col">Nota</th>
+                          </tr>
+                        </thead>
+                        <tbody id="idTabela">
+                         
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
